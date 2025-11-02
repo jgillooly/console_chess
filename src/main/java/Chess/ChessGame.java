@@ -20,6 +20,7 @@ public class ChessGame {
      */
     public boolean playMove(Tuple from, Tuple to){
         if(isValidMove(from, to, false)) {
+            board.saveBoardState();
             Tile fromTile = board.getBoardArray()[from.Y()][from.X()];
             ChessPiece pieceToMove = fromTile.getPiece();
 
@@ -32,6 +33,15 @@ public class ChessGame {
         } else {
             return false;
         }
+    }
+
+    public boolean undoLastMove(){
+        if(board.undoMove()){
+            endTurn();
+            isFinished = false; //un-doing a move means game can't be finished.
+            return  true;
+        }
+        return false;
     }
 
     /**

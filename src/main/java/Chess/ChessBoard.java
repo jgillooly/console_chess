@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 public class ChessBoard {
     private final Tile[][] board;
+    private final Tile[][] lastBoard;
 
     public ChessBoard(){
         board = new Tile[8][8];
+        lastBoard = new Tile[8][8];
         initializeBoard();
         fillBoard();
     }
@@ -92,5 +94,34 @@ public class ChessBoard {
         //kings
         board[0][4].setPiece(new King(ChessPiece.PieceColor.Black));
         board[7][4].setPiece(new King(ChessPiece.PieceColor.White));
+    }
+
+    private void copyBoard(Tile[][] source, Tile[][] destination){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                destination[i][j] = new Tile(source[i][j]);
+            }
+        }
+    }
+
+    public boolean undoMove(){
+        if(areBoardsEqual(board, lastBoard))
+            return false;
+        copyBoard(lastBoard, board);
+        return true;
+    }
+
+    public void saveBoardState(){
+        copyBoard(board, lastBoard);
+    }
+
+    private boolean areBoardsEqual(Tile[][] boardA, Tile[][] boardB){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(!boardA[i][j].equals(boardB[i][j]))
+                    return false;
+            }
+        }
+        return true;
     }
 }

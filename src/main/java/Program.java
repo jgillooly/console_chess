@@ -19,6 +19,17 @@ public class Program {
             System.out.println("Enter move (eg. A2-A3): ");
             String input = scanner.nextLine();
 
+            if (input.equals("undo")) {
+                boolean undone = game.undoLastMove();
+                if (undone) {
+                    BoardDisplay.clearConsole();
+                    BoardDisplay.printBoard(game.getBoard());
+                } else {
+                    System.out.println("You can only undo once!");
+                }
+                continue;
+            }
+
             if (!handler.isValid(input)) {
                 System.out.println("Invalid input!");
                 System.out.println("Valid input is in form: A2-A3");
